@@ -4,6 +4,8 @@ import { Patch } from '@nestjs/common';
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { Response } from 'express';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -25,18 +27,18 @@ export class CoffeesController {
     }
 
     @Post()
-    create(@Body() coffees) {
+    create(@Body() coffees : CreateCoffeeDto) {
         // return coffees;
         return this.coffeesService.create(coffees)
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() coffees) {
+    update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
         // return `object with id ${id} is update with this body : ${JSON.stringify(
         //     coffees,
         // )}`;
 
-        return this.coffeesService.update(id, coffees);
+        return this.coffeesService.update(id, updateCoffeeDto);
     }
 
     @Delete(':id')
