@@ -1,3 +1,6 @@
+/*
+*@Class Coffe
+*/
 export class Coffee {
 
     id : number;
