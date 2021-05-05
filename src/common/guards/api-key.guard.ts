@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decoratot';
 export class ApiKeyGuard implements CanActivate {
     constructor(
         private readonly reflector: Reflector,
-        // private readonly configServ : ConfigService
+        private readonly configServ : ConfigService
     ) {}
 
     canActivate(
@@ -17,7 +17,7 @@ export class ApiKeyGuard implements CanActivate {
     ): boolean | Promise<boolean> | Observable<boolean> {
         const isPublic = this.reflector.get(
             IS_PUBLIC_KEY,
-            context.getHandler(),
+            context.getHandler()
         );
 
         if (isPublic) {
@@ -27,6 +27,6 @@ export class ApiKeyGuard implements CanActivate {
         const req = context.switchToHttp().getRequest<Request>();
         const autheader = req.header('Authorization');
 
-        return autheader === process.env.AUTH_KEY;
+        return autheader === this.configServ.get('API_KEY');
     }
 }

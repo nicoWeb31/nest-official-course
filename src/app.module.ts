@@ -12,6 +12,7 @@ import { CommonModule } from './common/common.module';
 
 @Module({
     imports: [
+        CommonModule,
         ConfigModule.forRoot({
             load: [appConfig],
         }),
@@ -27,7 +28,6 @@ import { CommonModule } from './common/common.module';
         }),
         CoffeeRatingModule,
         CoffeesModule,
-        CommonModule,
     ],
     exports:[],
     controllers: [AppController],
