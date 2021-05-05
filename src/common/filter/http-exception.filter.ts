@@ -20,7 +20,7 @@ export class HttpExceptionFilter<T extends HttpException>
                 ? { message: exeptionResponse }
                 : (exeptionResponse as object);
 
-        response.status(status).json({...error})
+        response.status(status).json({...error, other: 'zero plus zero'})
     }
     
 }
