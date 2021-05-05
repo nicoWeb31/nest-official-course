@@ -8,22 +8,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
+import { appConfig } from 'config/app.config';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
-            
+            // validationSchema : Joi.object({
+            //     DB_HOST : Joi.required(),
+            //     DB_PORT : Joi.number().default(5432),
+            // }),
+            // load : [appConfig]
         }),
         CoffeesModule,
-        TypeOrmModule.forRoot({
-            type: 'postgres', // type of our database
-            host: process.env.DB_HOST, // database host
-            port: Number(process.env.DB_PORT), // database host
-            username: process.env.DB_USER, // username
-            password: process.env.DB_PASS, // user password
-            database: process.env.DB_BASE, // name of our database,
-            autoLoadEntities: true, // models will be loaded automatically
-            synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
+        TypeOrmModule.forRootAsync({
+            useFactory: () => ({
+                type: 'postgres', // type of our database
+                host: process.env.DB_HOST, // database host
+                port: Number(process.env.DB_PORT), // database host
+                username: process.env.DB_USER, // username
+                password: process.env.DB_PASS, // user password
+                database: process.env.DB_BASE, // name of our database,
+                autoLoadEntities: true, // models will be loaded automatically
+                synchronize: true,
+            }), // your entities will be synced with the database(recommended: disable in prod)
         }),
         CoffeeRatingModule,
         DatabaseModule,
